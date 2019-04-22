@@ -46,7 +46,7 @@ limitations under the License.
 	</changeSet>	
 	<changeSet author="miaoai (generated)" id="1360440238345-2">
 		<addUniqueConstraint columnNames="NAME" constraintName="SYS_C0013015" deferrable="false" disabled="false" initiallyDeferred="false" tableName="ROLES"/>
-	</changeSet>       
+	</changeSet>  
 	<changeSet author="miaoai (generated)" id="1360440238345-3">
 		<createTable tableName="USER_ROLE">
 			<column name="USER_ID" type="BIGINT">
@@ -59,7 +59,38 @@ limitations under the License.
 	</changeSet>        
 	<changeSet author="miaoai (generated)" id="1360440238345-4">
 		<addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="USER_ROLE" constraintName="FK143BF46A2EE17E2D" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID" referencedTableName="ROLES" referencesUniqueColumn="false"/>
-	</changeSet>               
+	</changeSet>  
+	
+	<changeSet author="venky" id="1360440238345-24">
+		<createTable tableName="GROUPS">
+			<column name="ID" type="BIGINT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="GROUPS_PK"/>
+			</column>
+			<column name="DEFAULTROLE" type="BOOLEAN">
+				<constraints nullable="false"/>
+			</column>
+			<column name="NAME" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="venky" id="1360440238345-25">
+		<addUniqueConstraint columnNames="NAME" constraintName="SYS_C0013016" deferrable="false" disabled="false" initiallyDeferred="false" tableName="GROUPS"/>
+	</changeSet>  	  
+	<changeSet author="venky" id="1360440238345-26">
+		<createTable tableName="USER_GROUP">
+			<column name="USER_ID" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+			<column name="GROUP_ID" type="BIGINT">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>        
+	<changeSet author="venky" id="1360440238345-27">
+		<addForeignKeyConstraint baseColumnNames="GROUP_ID" baseTableName="USER_GROUP" constraintName="FK143BF46A2EE17E2E" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID" referencedTableName="GROUPS" referencesUniqueColumn="false"/>
+	</changeSet>   
+	             
 	<changeSet author="miaoai (generated)" id="1360440238345-6">
 		<createTable tableName="USERS">
 			<column name="ID" type="BIGINT">
@@ -90,7 +121,12 @@ limitations under the License.
 	</changeSet>
 	<changeSet author="miaoai (generated)" id="1360440238345-5">
 		<addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="USER_ROLE" constraintName="FK143BF46AD40C420D" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID" referencedTableName="USERS" referencesUniqueColumn="false"/>
-	</changeSet>  
+	</changeSet> 
+	
+	<changeSet author="venky" id="1360440238345-28">
+		<addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="USER_GROUP" constraintName="FK143BF46AD40C420E" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID" referencedTableName="USERS" referencesUniqueColumn="false"/>
+	</changeSet> 
+	 
 	<changeSet author="arpost (generated)" id="1360440238345-74">
 		<createSequence sequenceName="ROLE_SEQ"/>
 	</changeSet>        
@@ -112,7 +148,19 @@ limitations under the License.
 			<column name="ID" valueNumeric="1"/>
 			<column name="NAME" value="superuser"/>
 			<column name="DEFAULTROLE" valueBoolean="false"/>
-		</insert>            
+		</insert>    
+		
+		<insert tableName="GROUPS">
+			<column name="ID" valueNumeric="1"/>
+			<column name="NAME" value="read"/>
+			<column name="DEFAULTROLE" valueBoolean="true"/>
+		</insert>
+		<insert tableName="GROUPS">
+			<column name="ID" valueNumeric="2"/>
+			<column name="NAME" value="readwrite"/>
+			<column name="DEFAULTROLE" valueBoolean="false"/>
+		</insert>
+		        
 		<insert tableName="USERS">
 			<column name="ID" valueNumeric="1"/>
 			<column name="ACTIVE" valueBoolean="true"/>
@@ -136,7 +184,16 @@ limitations under the License.
 		<insert tableName="USER_ROLE">
 			<column name="USER_ID" valueNumeric="1"/>
 			<column name="ROLE_ID" valueNumeric="3"/>
-		</insert>                
+		</insert>   
+		
+		<insert tableName="USER_GROUP">
+			<column name="USER_ID" valueNumeric="1"/>
+			<column name="GROUP_ID" valueNumeric="1"/>
+		</insert>
+		<insert tableName="USER_GROUP">
+			<column name="USER_ID" valueNumeric="1"/>
+			<column name="GROUP_ID" valueNumeric="2"/>
+		</insert>             
 	</changeSet>
     
 	<!-- 1.8 changes -->
@@ -367,5 +424,9 @@ limitations under the License.
 	</changeSet>     
 	<changeSet author="mai" id="1360440238345-21">
 		<addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="USER_ROLE" constraintName="FK_USER_ROLE_TO_ROLES" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID" referencedTableName="ROLES" referencesUniqueColumn="false"/>
+	</changeSet>
+	
+	<changeSet author="venky" id="1360440238345-29">
+		<addForeignKeyConstraint baseColumnNames="GROUP_ID" baseTableName="USER_GROUP" constraintName="FK_USER_GROUP_TO_GROUPS" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" referencedColumnNames="ID" referencedTableName="GROUPS" referencesUniqueColumn="false"/>
 	</changeSet>
 </databaseChangeLog>
